@@ -143,9 +143,52 @@ $(".card .list-group").sortable({
   out: function(event) {
     console.log("out", event.target);
   },
+
+  // update function
   update: function(event) {
-    console.log($(this).children());
-  }
+    var tempArr = [];
+    // loop over current set of children in sortable list
+$(this).children().each(function() {
+  
+  var text = $(this)
+    .find("p")
+    .text()
+    .trim();
+
+  var date = $(this)
+    .find("span")
+    .text()
+    .trim();
+
+  tempArr.push({
+    text: text,
+    date: date
+  });
 });
 
+var arrName = $(this)
+    .attr("id")
+    .replace("list-", "");
 
+tasks[arrName] = tempArr;
+saveTasks();
+
+console.log(tempArr);
+
+}
+});
+
+$("#trash").droppable({
+  accept: ".card .list-group-item",
+  tolerance: "touch",
+  drop: function(event, ui) {
+    ui.draggable.remove();
+    console.log("drop");
+  },
+  over: function(event, ui) {
+    console.log("over");
+  },
+  out: function(event, ui) {
+    console.log("out");
+  }
+});
